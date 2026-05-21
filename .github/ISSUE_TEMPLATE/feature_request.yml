@@ -1,0 +1,35 @@
+name: Feature Request
+description: Suggest a new feature or improvement
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What's the problem?
+      description: What are you trying to do that DLYAKA doesn't support yet?
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: How should DLYAKA solve this? A CLI sketch or a code snippet helps.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you've considered
+      description: What other approaches did you think about?
+
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope check
+      description: DLYAKA stays small on purpose. See CONTRIBUTING.md.
+      options:
+        - label: This wouldn't require a new heavy dependency
+        - label: This doesn't weaken the security model
+        - label: This isn't a complete rewrite

@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/TDYSKY/dlyaka/security/advisories/new
+    about: Report security issues privately — do not file a public issue.
+  - name: Discord community
+    url: https://discord.gg/RTax3aBMUs
+    about: Ask a question or chat with other users (AgencyG Discord).
+  - name: AgencyG shop
+    url: https://shop.agencyg.de
+    about: Check out our other tools and FiveM scripts.

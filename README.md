@@ -21,7 +21,21 @@
 
 You've done it. Everyone has. API key in a `.env` file → forgot to gitignore it → pushed to GitHub → seconds later you're frantically revoking the key.
 
+> GitHub detects roughly **10 million leaked secrets per year**. Most of them are API keys for AI providers, cloud platforms, and databases. Don't be the next one.
+
 DLYAKA fixes this by keeping your API keys in an **encrypted vault on your local machine**, completely separated from your projects. Your scripts read them via a CLI wrapper or a one-line Python call — never as literal strings in code.
+
+## Why DLYAKA?
+
+|                                  | `.env` files | OS keyring | **DLYAKA** |
+|----------------------------------|:-:|:-:|:-:|
+| Keys never in your repo          | ⚠️ (easy to forget gitignore) | ✅ | ✅ |
+| Encrypted at rest                | ❌ | ✅ | ✅ |
+| Works in headless scripts        | ✅ | ⚠️ (OS prompts) | ✅ |
+| Works across Mac / Linux / Win   | ✅ | ⚠️ (different backends) | ✅ |
+| Built-in `run <cmd>` wrapper     | ❌ | ❌ | ✅ |
+| Bundled Claude Code skill        | ❌ | ❌ | ✅ |
+| Zero config to use the keys      | ⚠️ | ❌ | ✅ |
 
 ## Features
 
@@ -199,6 +213,12 @@ See [`claude_skill/dlyaka/SKILL.md`](claude_skill/dlyaka/SKILL.md) for the full 
 - DLYAKA never writes the decrypted vault to disk
 - If you suspect your master password was compromised, run `dlyaka remove` for each key and re-add with new keys
 
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=TDYSKY/dlyaka&type=Date)](https://star-history.com/#TDYSKY/dlyaka&Date)
+
+If DLYAKA saved you 30 seconds of panicked key-rotation, a star takes 2.
+
 ## Contributing
 
 ```bash
@@ -208,7 +228,7 @@ pip install -e ".[dev]"
 pytest
 ```
 
-PRs welcome.
+See [CONTRIBUTING.md](CONTRIBUTING.md). Security issues → [SECURITY.md](SECURITY.md).
 
 ## License
 
@@ -227,6 +247,8 @@ DLYAKA is built and maintained by **[AgencyG](https://agencyg.de)** — we ship 
 </div>
 
 If DLYAKA saved you from a leaked key, leave a star on the repo and come say hi in our Discord.
+
+[![Tweet](https://img.shields.io/twitter/url/https/github.com/TDYSKY/dlyaka.svg?style=social)](https://twitter.com/intent/tweet?text=Stop%20leaking%20your%20API%20keys.%20DLYAKA%20is%20a%20tiny%20encrypted%20local%20vault%20for%20Claude%20%26%20ChatGPT%20keys%20%E2%80%94%20with%20a%20Claude%20Code%20skill%20bundled.&url=https%3A%2F%2Fgithub.com%2FTDYSKY%2Fdlyaka)
 
 ---
 
