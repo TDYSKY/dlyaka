@@ -7,8 +7,11 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![tests](https://github.com/TDYSKY/dlyaka/actions/workflows/tests.yml/badge.svg)](https://github.com/TDYSKY/dlyaka/actions/workflows/tests.yml)
+[![Discord](https://img.shields.io/discord/0?label=Discord&logo=discord&logoColor=white&color=5865F2)](https://discord.gg/RTax3aBMUs)
 
 **A tiny CLI + Python library that keeps your Claude and ChatGPT API keys encrypted on your machine — and out of your code.**
+
+[Download](https://github.com/TDYSKY/dlyaka/releases/latest) · [Discord](https://discord.gg/RTax3aBMUs) · [agencyg.de](https://agencyg.de) · [Shop](https://shop.agencyg.de)
 
 </div>
 
@@ -32,16 +35,26 @@ DLYAKA fixes this by keeping your API keys in an **encrypted vault on your local
 
 ## Installation
 
+### Option 1 — From the latest release (recommended)
+
+Grab the wheel from the [Releases page](https://github.com/TDYSKY/dlyaka/releases/latest) and install it:
+
 ```bash
-pip install dlyaka
+pip install dlyaka-0.1.0-py3-none-any.whl
 ```
 
-Or from source:
+### Option 2 — From source
 
 ```bash
 git clone https://github.com/TDYSKY/dlyaka
 cd dlyaka
 pip install -e .
+```
+
+### Option 3 — Directly from GitHub
+
+```bash
+pip install git+https://github.com/TDYSKY/dlyaka.git
 ```
 
 ## Quick Start
@@ -200,6 +213,20 @@ PRs welcome.
 ## License
 
 [MIT](LICENSE) — do whatever you want with it.
+
+---
+
+## Built by AgencyG
+
+DLYAKA is built and maintained by **[AgencyG](https://agencyg.de)** — we ship high-quality developer tools and FiveM scripts.
+
+<div align="center">
+
+[**agencyg.de**](https://agencyg.de) &nbsp;·&nbsp; [**shop.agencyg.de**](https://shop.agencyg.de) &nbsp;·&nbsp; [**Discord community**](https://discord.gg/RTax3aBMUs)
+
+</div>
+
+If DLYAKA saved you from a leaked key, leave a star on the repo and come say hi in our Discord.
 
 ---
 
