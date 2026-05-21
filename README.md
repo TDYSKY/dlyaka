@@ -11,7 +11,13 @@
 
 **A tiny CLI + Python library that keeps your Claude and ChatGPT API keys encrypted on your machine — and out of your code.**
 
-[Download](https://github.com/TDYSKY/dlyaka/releases/latest) · [Discord](https://discord.gg/RTax3aBMUs) · [agencyg.de](https://agencyg.de) · [Shop](https://shop.agencyg.de)
+### Install in one line
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/TDYSKY/dlyaka/main/install.sh | bash
+```
+
+[Latest release](https://github.com/TDYSKY/dlyaka/releases/latest) · [Discord](https://discord.gg/RTax3aBMUs) · [agencyg.de](https://agencyg.de) · [Shop](https://shop.agencyg.de)
 
 </div>
 
@@ -49,15 +55,49 @@ DLYAKA fixes this by keeping your API keys in an **encrypted vault on your local
 
 ## Installation
 
-### Option 1 — From the latest release (recommended)
+### One-command install (recommended)
 
-Grab the wheel from the [Releases page](https://github.com/TDYSKY/dlyaka/releases/latest) and install it:
+```bash
+curl -fsSL https://raw.githubusercontent.com/TDYSKY/dlyaka/main/install.sh | bash
+```
+
+This script:
+
+1. Queries the GitHub API for the latest release
+2. Downloads the wheel
+3. **Verifies the SHA-256 checksum** against the signed `SHA256SUMS.txt`
+4. Auto-detects the best install method (active venv → `pipx` if available → `pip --user`)
+5. Reports a `PATH` hint if needed
+
+**Force pipx (recommended for CLI tools):**
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/TDYSKY/dlyaka/main/install.sh | bash -s -- --pipx
+```
+
+**Pin a specific version:**
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/TDYSKY/dlyaka/main/install.sh | bash -s -- --version 0.2.0
+```
+
+**Inspect before running** (always a good idea with `curl | bash`):
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/TDYSKY/dlyaka/main/install.sh -o install.sh
+less install.sh           # review
+bash install.sh
+```
+
+### Manual install
+
+From the [Releases page](https://github.com/TDYSKY/dlyaka/releases/latest):
 
 ```bash
 pip install dlyaka-0.2.0-py3-none-any.whl
 ```
 
-### Option 2 — From source
+From source:
 
 ```bash
 git clone https://github.com/TDYSKY/dlyaka
@@ -65,7 +105,7 @@ cd dlyaka
 pip install -e .
 ```
 
-### Option 3 — Directly from GitHub
+Direct from GitHub:
 
 ```bash
 pip install git+https://github.com/TDYSKY/dlyaka.git
