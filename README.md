@@ -54,7 +54,7 @@ DLYAKA fixes this by keeping your API keys in an **encrypted vault on your local
 Grab the wheel from the [Releases page](https://github.com/TDYSKY/dlyaka/releases/latest) and install it:
 
 ```bash
-pip install dlyaka-0.1.0-py3-none-any.whl
+pip install dlyaka-0.2.0-py3-none-any.whl
 ```
 
 ### Option 2 — From source
@@ -76,11 +76,13 @@ pip install git+https://github.com/TDYSKY/dlyaka.git
 **1.** Store your API keys:
 
 ```bash
-dlyaka add anthropic sk-ant-your-key-here
-dlyaka add openai sk-your-openai-key-here
+dlyaka add anthropic     # hidden prompt — no shell history, no chat
+dlyaka add openai        # same
 ```
 
-You'll be prompted for a master password on first use. This password encrypts the vault.
+You'll be prompted for the API key (hidden input) and then a master password on first use. The master password encrypts the vault.
+
+> Power-user shortcut: `dlyaka add anthropic sk-ant-...` works too, but the key lands in your shell history. Prefer the prompt mode.
 
 **2.** Run any script with keys injected automatically:
 
@@ -110,16 +112,70 @@ import anthropic
 client = anthropic.Anthropic(api_key=get_key("anthropic"))
 ```
 
+## Using DLYAKA with Claude Code & AI assistants
+
+Pasting an API key into a chat with Claude, ChatGPT, Copilot, or any AI tool puts that key into the conversation history — and possibly logs, training data, and backend storage. DLYAKA is built to make sure that never happens.
+
+### The secure transmission pattern
+
+```
+You:    "Claude, query GPT-4 to compare answers on this prompt."
+
+Claude: "Don't paste your OpenAI key. Run this in your own terminal:
+            dlyaka add openai
+         You'll get a hidden prompt — the key never enters chat
+         or shell history."
+
+You:    [adds key in your terminal]
+You:    "Done."
+
+Claude: [writes a Python script that uses openai client]
+        [runs `dlyaka run python script.py`]
+
+dlyaka: → decrypts vault locally (master password prompt)
+        → injects OPENAI_API_KEY into the subprocess environment
+        → captures stdout/stderr and redacts any accidental key leak
+        → streams the cleaned output back
+
+Claude: [sees only the GPT-4 answer — never the key value]
+```
+
+### Security guarantees
+
+1. The key **never enters chat history** — you add it in your own terminal via `dlyaka add <name>` (hidden prompt)
+2. The key **never enters shell history** — the prompt is hidden input, not a CLI argument
+3. The key **never appears in Claude's tool input/output** — `dlyaka run` injects it into the subprocess env, bypassing Claude entirely
+4. **Accidental leaks are redacted** — if a script accidentally `print()`s the key, `dlyaka run` replaces it with `[REDACTED-API-KEY]` before output reaches Claude
+5. The key **never touches a `.env` file** in your repo
+
+### Install the Claude Code skill
+
+```bash
+./claude_skill/install.sh
+```
+
+After install, Claude Code will:
+
+- Refuse to accept API keys pasted in chat (and tell you to revoke them)
+- Use `dlyaka run` for every AI API call
+- Never run `dlyaka get` or `dlyaka env` from its shell tool
+- Verify key presence via `dlyaka fingerprint` (a hash, safe to share)
+
+See [`claude_skill/dlyaka/SKILL.md`](claude_skill/dlyaka/SKILL.md) for the full skill definition.
+
 ## CLI Reference
 
 | Command | Description |
 |---------|-------------|
-| `dlyaka add <name> <key>` | Store or update an API key |
-| `dlyaka get <name>` | Print a stored key |
-| `dlyaka list` | List stored key names (values never shown) |
+| `dlyaka add <name>` | Store or update a key — **hidden prompt, no shell history** |
+| `dlyaka add <name> <key>` | Same, but key on argv (lands in shell history — convenience only) |
+| `dlyaka get <name>` | Print a stored key value (use in your own terminal only) |
+| `dlyaka list` | List stored key names + fingerprints |
+| `dlyaka fingerprint <name>` | Print a SHA-256 fingerprint of a key (safe to share) |
 | `dlyaka remove <name>` | Delete a key |
-| `dlyaka run <cmd>` | Run a command with keys as env vars |
-| `dlyaka env` | Print `export KEY=value` lines |
+| `dlyaka run <cmd>` | Run a command with keys as env vars — **subprocess output is auto-redacted** |
+| `dlyaka run --no-redact <cmd>` | Same, without redaction (not recommended) |
+| `dlyaka env` | Print `export KEY=value` lines (eval into your shell) |
 
 ### Shell integration
 
