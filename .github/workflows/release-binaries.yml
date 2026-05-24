@@ -1,0 +1,157 @@
+name: Build release binaries
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            artifact_suffix: linux-x86_64
+            cli_name: dlyaka
+            gui_name: dlyaka-gui
+          - os: macos-13            # Intel
+            artifact_suffix: macos-x86_64
+            cli_name: dlyaka
+            gui_name: dlyaka-gui
+          - os: macos-14            # Apple Silicon
+            artifact_suffix: macos-arm64
+            cli_name: dlyaka
+            gui_name: dlyaka-gui
+          - os: windows-latest
+            artifact_suffix: windows-x86_64
+            cli_name: dlyaka.exe
+            gui_name: dlyaka-gui.exe
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install system Tk on Linux
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y python3-tk
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+          pip install pyinstaller
+
+      - name: Read version
+        id: version
+        shell: bash
+        run: |
+          V=$(python -c "from dlyaka import __version__; print(__version__)")
+          echo "value=$V" >> "$GITHUB_OUTPUT"
+
+      - name: Build CLI binary
+        shell: bash
+        run: |
+          pyinstaller \
+            --onefile \
+            --name dlyaka \
+            --console \
+            packaging/entry_cli.py
+
+      - name: Build GUI binary
+        shell: bash
+        run: |
+          pyinstaller \
+            --onefile \
+            --name dlyaka-gui \
+            --windowed \
+            packaging/entry_gui.py
+
+      - name: Smoke-test CLI binary (Unix)
+        if: runner.os != 'Windows'
+        run: ./dist/${{ matrix.cli_name }} --version
+
+      - name: Smoke-test CLI binary (Windows)
+        if: runner.os == 'Windows'
+        run: .\dist\${{ matrix.cli_name }} --version
+
+      - name: Package artifacts
+        shell: bash
+        run: |
+          mkdir -p out
+          V=${{ steps.version.outputs.value }}
+          SUF=${{ matrix.artifact_suffix }}
+          if [[ "${{ runner.os }}" == "Windows" ]]; then
+            cp dist/${{ matrix.cli_name }} out/dlyaka-cli-${V}-${SUF}.exe
+            cp dist/${{ matrix.gui_name }} out/dlyaka-gui-${V}-${SUF}.exe
+          else
+            cp dist/${{ matrix.cli_name }} out/dlyaka-cli-${V}-${SUF}
+            chmod +x out/dlyaka-cli-${V}-${SUF}
+            if [[ -d dist/dlyaka-gui.app ]]; then
+              # macOS .app bundle — zip it
+              (cd dist && zip -qr ../out/dlyaka-gui-${V}-${SUF}.app.zip dlyaka-gui.app)
+              cp dist/${{ matrix.gui_name }} out/dlyaka-gui-${V}-${SUF}
+              chmod +x out/dlyaka-gui-${V}-${SUF}
+            else
+              cp dist/${{ matrix.gui_name }} out/dlyaka-gui-${V}-${SUF}
+              chmod +x out/dlyaka-gui-${V}-${SUF}
+            fi
+          fi
+          ls -lah out/
+
+      - name: Generate checksums
+        shell: bash
+        working-directory: out
+        run: |
+          if command -v shasum >/dev/null; then
+            shasum -a 256 * > SHA256SUMS-${{ matrix.artifact_suffix }}.txt
+          else
+            sha256sum * > SHA256SUMS-${{ matrix.artifact_suffix }}.txt
+          fi
+          cat SHA256SUMS-${{ matrix.artifact_suffix }}.txt
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: binaries-${{ matrix.artifact_suffix }}
+          path: out/*
+          retention-days: 7
+
+  attach-to-release:
+    name: Attach binaries to GitHub Release
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: dist-bin
+
+      - name: Flatten artifacts and combine checksums
+        run: |
+          mkdir -p release
+          find dist-bin -type f -not -name "SHA256SUMS*" -exec cp {} release/ \;
+          # Aggregate the per-platform SHA256SUMS files
+          cat dist-bin/*/SHA256SUMS-*.txt > release/SHA256SUMS.txt
+          ls -lah release/
+          cat release/SHA256SUMS.txt
+
+      - name: Attach to release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG=${GITHUB_REF#refs/tags/}
+          gh release upload "$TAG" release/* --clobber --repo "${{ github.repository }}"

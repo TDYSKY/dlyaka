@@ -9,9 +9,13 @@
 [![tests](https://github.com/TDYSKY/dlyaka/actions/workflows/tests.yml/badge.svg)](https://github.com/TDYSKY/dlyaka/actions/workflows/tests.yml)
 [![Discord](https://img.shields.io/discord/0?label=Discord&logo=discord&logoColor=white&color=5865F2)](https://discord.gg/RTax3aBMUs)
 
-**A tiny CLI + Python library that keeps your Claude and ChatGPT API keys encrypted on your machine — and out of your code.**
+**A tiny native app + CLI + Python library that keeps your Claude and ChatGPT API keys encrypted on your machine — and out of your code.**
 
-### Install in one line
+### Native app or one-line install
+
+📥 **[Download for macOS / Linux / Windows](https://github.com/TDYSKY/dlyaka/releases/latest)** — single-file binaries, no Python needed
+
+🐍 **Or install via pip:**
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/TDYSKY/dlyaka/main/install.sh | bash
@@ -55,7 +59,33 @@ DLYAKA fixes this by keeping your API keys in an **encrypted vault on your local
 
 ## Installation
 
-### One-command install (recommended)
+### Native app for your OS (no Python needed)
+
+Download a single-file binary from the [latest release](https://github.com/TDYSKY/dlyaka/releases/latest). No Python install required — these are standalone executables.
+
+| Platform | CLI binary | GUI app |
+|----------|------------|---------|
+| **macOS** (Apple Silicon) | `dlyaka-cli-X.Y.Z-macos-arm64` | `dlyaka-gui-X.Y.Z-macos-arm64` + `.app.zip` |
+| **macOS** (Intel) | `dlyaka-cli-X.Y.Z-macos-x86_64` | `dlyaka-gui-X.Y.Z-macos-x86_64` |
+| **Linux** (x86_64) | `dlyaka-cli-X.Y.Z-linux-x86_64` | `dlyaka-gui-X.Y.Z-linux-x86_64` |
+| **Windows** (x86_64) | `dlyaka-cli-X.Y.Z-windows-x86_64.exe` | `dlyaka-gui-X.Y.Z-windows-x86_64.exe` |
+
+**macOS**: the binary is unsigned. To run it the first time:
+
+```bash
+xattr -d com.apple.quarantine ~/Downloads/dlyaka-gui-*-macos-*
+chmod +x ~/Downloads/dlyaka-cli-*-macos-*
+```
+
+Or right-click → Open → confirm.
+
+**Windows**: SmartScreen may show "Unknown publisher" — click "More info" → "Run anyway".
+
+**Linux**: `chmod +x` the binary and run it. The GUI needs an X11 / Wayland session.
+
+Checksums are in `SHA256SUMS.txt` attached to each release. Verify with `shasum -c SHA256SUMS.txt`.
+
+### One-command install (Python users)
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/TDYSKY/dlyaka/main/install.sh | bash

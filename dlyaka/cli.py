@@ -8,6 +8,7 @@ from typing import List
 
 import click
 
+from . import __version__
 from . import vault as _vault
 from .vault import SALT_FILE
 
@@ -63,7 +64,7 @@ def _fingerprint(api_key: str) -> str:
 
 
 @click.group()
-@click.version_option()
+@click.version_option(version=__version__, prog_name="dlyaka")
 def cli():
     """DLYAKA — Don't Leak Your API Key Again.
 

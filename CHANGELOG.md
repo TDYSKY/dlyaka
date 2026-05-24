@@ -2,6 +2,25 @@
 
 All notable changes to DLYAKA will be documented here. Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows [SemVer](https://semver.org/).
 
+## [0.3.0] — 2026-05-21
+
+### Added — Native apps for all platforms
+
+- **Tkinter GUI app** (`dlyaka-gui`) with all CLI features:
+  - Add / remove keys
+  - List with fingerprints (no values ever shown)
+  - Copy key to clipboard with **auto-clear after 30 seconds**
+  - "Run script…" file picker that injects keys into the subprocess and shows live, redacted output in a window
+  - Master password cached only in memory; "Lock vault" button to forget it
+- **Native single-file binaries** for every major platform via PyInstaller:
+  - Linux x86_64 (CLI + GUI)
+  - macOS x86_64 (Intel) and arm64 (Apple Silicon) — CLI + GUI + `.app` bundle
+  - Windows x86_64 (CLI + GUI)
+- **`release-binaries.yml`** GitHub Actions workflow that builds and attaches all binaries to every tagged release, with per-platform SHA-256 checksums.
+- New `dlyaka-gui` entry point in `pyproject.toml`.
+
+[0.3.0]: https://github.com/TDYSKY/dlyaka/releases/tag/v0.3.0
+
 ## [0.2.0] — 2026-05-21
 
 ### Added — Secure Transmission

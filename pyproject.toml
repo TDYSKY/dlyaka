@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "dlyaka"
-version = "0.2.0"
+version = "0.3.0"
 description = "Don't Leak Your API Key Again — encrypted local API key vault for Claude, ChatGPT, and any AI provider."
 readme = "README.md"
 license = { text = "MIT" }
@@ -38,6 +38,9 @@ dev = ["pytest>=7.0", "pytest-cov"]
 
 [project.scripts]
 dlyaka = "dlyaka.cli:cli"
+
+[project.gui-scripts]
+dlyaka-gui = "dlyaka.gui:main"
 
 [project.urls]
 Homepage = "https://github.com/TDYSKY/dlyaka"
