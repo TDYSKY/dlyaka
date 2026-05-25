@@ -65,8 +65,8 @@ Download a single-file binary from the [latest release](https://github.com/TDYSK
 
 | Platform | CLI binary | GUI app |
 |----------|------------|---------|
-| **macOS** (Apple Silicon) | `dlyaka-cli-X.Y.Z-macos-arm64` | `dlyaka-gui-X.Y.Z-macos-arm64` + `.app.zip` |
-| **macOS** (Intel) | `dlyaka-cli-X.Y.Z-macos-x86_64` | `dlyaka-gui-X.Y.Z-macos-x86_64` |
+| **macOS** (Apple Silicon) | `dlyaka-cli-X.Y.Z-macos-arm64` | `dlyaka-gui-X.Y.Z-macos-arm64` |
+| **macOS** (Intel) | run the Apple Silicon binary via Rosetta 2 (`arch -x86_64`) or build from source |  |
 | **Linux** (x86_64) | `dlyaka-cli-X.Y.Z-linux-x86_64` | `dlyaka-gui-X.Y.Z-linux-x86_64` |
 | **Windows** (x86_64) | `dlyaka-cli-X.Y.Z-windows-x86_64.exe` | `dlyaka-gui-X.Y.Z-windows-x86_64.exe` |
 

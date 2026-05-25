@@ -18,10 +18,9 @@ jobs:
             artifact_suffix: linux-x86_64
             cli_name: dlyaka
             gui_name: dlyaka-gui
-          - os: macos-13            # Intel
-            artifact_suffix: macos-x86_64
-            cli_name: dlyaka
-            gui_name: dlyaka-gui
+          # macos-13 (Intel) was removed — Apple Silicon binaries run on
+          # Intel Macs via Rosetta 2, and macos-13 runners have multi-hour
+          # queue times. If you need a native Intel binary, build from source.
           - os: macos-14            # Apple Silicon
             artifact_suffix: macos-arm64
             cli_name: dlyaka
