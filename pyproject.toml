@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "dlyaka"
-version = "0.3.0"
+version = "0.3.1"
 description = "Don't Leak Your API Key Again — encrypted local API key vault for Claude, ChatGPT, and any AI provider."
 readme = "README.md"
 license = { text = "MIT" }

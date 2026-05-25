@@ -2,6 +2,15 @@
 
 All notable changes to DLYAKA will be documented here. Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows [SemVer](https://semver.org/).
 
+## [0.3.1] — 2026-05-25
+
+### Fixed
+
+- **release-binaries.yml**: dropped `macos-13` (Intel) runner from the build matrix. GitHub's macOS 13 runner pool had multi-hour queue times that blocked the entire workflow. Apple Silicon binaries run on Intel Macs via Rosetta 2; users who need a native Intel binary can build from source with `pyinstaller packaging/entry_cli.py`.
+- No behavior changes in the package itself — same code as 0.3.0, only the release pipeline changed.
+
+[0.3.1]: https://github.com/TDYSKY/dlyaka/releases/tag/v0.3.1
+
 ## [0.3.0] — 2026-05-21
 
 ### Added — Native apps for all platforms
