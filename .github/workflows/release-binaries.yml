@@ -117,7 +117,7 @@ jobs:
           cat SHA256SUMS-${{ matrix.artifact_suffix }}.txt
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: binaries-${{ matrix.artifact_suffix }}
           path: out/*
